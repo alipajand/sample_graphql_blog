@@ -1,9 +1,14 @@
 export { default as Modal } from './shared/Modal';
 export { default as Layout } from './shared/Layout';
 export { default as Loader } from './shared/Loader';
+export { default as Pagination } from './shared/Pagination';
+export { default as ProgressBar } from './shared/ProgressBar';
 
 export { default as PostCard } from './posts/PostCard';
 export { default as RecentPosts } from './posts/RecentPosts';
 export { default as PostPagination } from './posts/PostPagination';
 
-export { default as NewPostForm } from './forms/NewPostForm';
+export { default as NewPost } from '@/components/newPost';
+export { default as NewPostButton } from '@/components/newPost/NewPostButton';
+export { default as NewPostForm } from '@/components/newPost/NewPostForm';
+export { default as NewPostModal } from '@/components/newPost/NewPostModal';

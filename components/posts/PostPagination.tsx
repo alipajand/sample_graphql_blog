@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PostInterface } from '@/interfaces';
-import { PostCard } from '@/components';
-import Pagination from '@/components/posts/Pagination';
+import { Pagination, PostCard } from '@/components';
 
 const limit = 5;
 

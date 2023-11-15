@@ -1,8 +1,8 @@
 import React from 'react';
-import { Loader, NewPostForm, PostPagination, RecentPosts } from '@/components';
 import { usePostsQuery } from '@/hooks/usePostsQuery';
+import { Loader, NewPost, PostPagination, RecentPosts } from '@/components';
 
-const NewPost = () => {
+const Index = () => {
   const { data, isLoading, refetch } = usePostsQuery();
 
   if (isLoading) return <Loader />;
@@ -15,7 +15,7 @@ const NewPost = () => {
         </div>
         <div className="lg:col-span-4 col-span-1">
           <div className="lg:sticky relative top-8">
-            <NewPostForm onAddPost={refetch} />
+            <NewPost onAddPost={refetch} />
             <RecentPosts data={data?.data.slice(0, 5)} />
           </div>
         </div>
@@ -24,4 +24,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default Index;
