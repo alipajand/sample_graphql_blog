@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import { useQueryClient } from 'react-query';
 
 import { createPost } from '@/services';
-import { NewPostProps } from '@/interfaces';
-import { Modal, SavedPost, NewPostForm, ProgressBar } from '@/components';
+import { NewPostProps, PostInterface } from '@/interfaces';
+import { Modal, NewPostForm, ProgressBar, SavedPost } from '@/components';
 
-interface NewPostFormProps {
-  onAddPost: () => void;
-}
-
-const NewPost: React.FC<NewPostFormProps> = ({ onAddPost }) => {
+const NewPost = ({ onAddPost }: { onAddPost: (posts: PostInterface[]) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [savedData, setSaveData] = useState<NewPostProps[]>([]);
   const [loadingProgress, setProgress] = useState(0);
@@ -31,11 +27,13 @@ const NewPost: React.FC<NewPostFormProps> = ({ onAddPost }) => {
     }
 
     Promise.all(promises.map(tick))
-      .then((res) => console.log(res))
+      .then((res: PostInterface[]) => onAddPost(res))
       .finally(() => {
         queryClient.invalidateQueries('posts');
-        onAddPost();
         closeModal();
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 

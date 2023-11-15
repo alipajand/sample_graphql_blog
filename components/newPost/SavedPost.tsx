@@ -5,7 +5,9 @@ const SavedPost = ({ data, onRemove }: { data: NewPostProps; onRemove: () => voi
   return (
     <li className="mb-4 flex justify-between">
       <span className="truncate mr-4">{data.title}</span>
-      <button className="text-red-600 text-xs cursor-pointer" onClick={onRemove}>Delete?</button>
+      <button className="text-red-600 text-xs cursor-pointer" onClick={onRemove}>
+        Delete?
+      </button>
     </li>
   );
 };
