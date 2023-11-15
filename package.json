@@ -14,12 +14,9 @@
   "dependencies": {
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
-    "html-react-parser": "^5.0.6",
-    "moment": "^2.29.4",
     "next": "14.0.2",
     "react": "^18",
     "react-dom": "^18",
-    "react-multi-carousel": "^2.8.4",
     "react-query": "^3.39.3",
     "swr": "^2.2.4"
   },
