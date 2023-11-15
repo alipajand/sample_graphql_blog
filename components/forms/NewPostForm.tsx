@@ -41,13 +41,15 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onAddPost }) => {
   };
 
   return (
-    <div>
-      <button
-        onClick={openModal}
-        className="bg-blue-500 w-full text-white px-4 py-3 mb-8 rounded-full transition duration-500 ease transform hover:-translate-y-1 cursor-pointer"
-      >
-        Add New Post
-      </button>
+    <>
+      <div className="flex justify-center lg:justify-start">
+        <button
+          onClick={openModal}
+          className="bg-blue-500 text-white px-12 py-3 mb-8 rounded-full transition duration-500 ease transform hover:-translate-y-1 cursor-pointer"
+        >
+          + Add New Post
+        </button>
+      </div>
 
       <Modal isOpen={isOpen} onClose={closeModal}>
         {isOpen && (
@@ -74,7 +76,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onAddPost }) => {
               <button
                 type="submit"
                 disabled={createPostMutation.isLoading}
-                className="bg-pink-600 text-white px-12 py-3 rounded-full w-full mt-8"
+                className="bg-blue-600 text-white px-12 py-3 rounded-full w-full mt-8"
               >
                 Add Post
               </button>
@@ -82,7 +84,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ onAddPost }) => {
           </>
         )}
       </Modal>
-    </div>
+    </>
   );
 };
 

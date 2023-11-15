@@ -14,16 +14,11 @@ const PostCard = ({ post }: { post: PostInterface }) => (
     </div>
 
     <div className="px-8 text-center">
-      <h1 className="transition duration-700 text-center mb-4 cursor-pointer hover:text-pink-600 text-3xl font-semibold">
+      <h1 className="transition duration-700 text-center mb-4 cursor-pointer hover:text-blue-600 text-3xl font-semibold">
         {post.title}
       </h1>
       <p className="mb-8 text-gray-700">{post.body}</p>
       <div className="mb-8 text-gray-700">Author: {post?.user?.name}</div>
-      <div>
-        <span className="transition duration-500 ease transform hover:-translate-y-1 inline-block bg-pink-600 font-medium rounded-full text-white px-8 py-3 cursor-pointer overflow-hidden">
-          Show Details
-        </span>
-      </div>
     </div>
   </div>
 );
