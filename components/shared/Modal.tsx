@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       className={`${modalClasses} z-10 bg-opacity-50 bg-black backdrop-blur transition-all duration-700`}
       onClick={onClose}
     >
-      <div className="bg-white shadow-xl p-8 rounded-xl w-full max-w-lg" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-white shadow-xl p-8 rounded-xl w-full max-w-[700px]" onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

@@ -11,3 +11,8 @@ export interface PostInterface {
   body: string;
   user: AuthorInterface;
 }
+
+export interface NewPostProps {
+  title: string;
+  body: string;
+}

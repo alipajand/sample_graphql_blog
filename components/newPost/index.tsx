@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { createPost } from '@/services';
-import { NewPostButton, NewPostModal } from '@/components';
+import { NewPostProps } from '@/interfaces';
+import { Modal, SavedPost, NewPostForm, ProgressBar } from '@/components';
 
 interface NewPostFormProps {
   onAddPost: () => void;
@@ -10,85 +11,101 @@ interface NewPostFormProps {
 
 const NewPost: React.FC<NewPostFormProps> = ({ onAddPost }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [posts, setPosts] = useState([{ title: '', body: '' }]);
-  const [progress, setProgress] = useState(0);
+  const [savedData, setSaveData] = useState<NewPostProps[]>([]);
 
   const queryClient = useQueryClient();
-  const isProcessing = useState(false)[1];
 
-  const createPostMutation = useMutation(
-    async (postData: { title: string; body: string }) => {
-      const res = await createPost(postData);
-      console.log(res);
-    },
-    {
-      onSuccess: () => {
-        setProgress((prev) => prev + 100 / posts.length);
-        if (posts.length > 0) {
-          processNextPost();
-        } else {
-          queryClient.invalidateQueries('posts');
-          closeModal();
-          onAddPost();
-        }
-      }
-    }
-  );
+  const onSubmit = (e: { preventDefault: () => void }) => {
+    e?.preventDefault();
 
-  const handleAddPost = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setPosts([...posts]);
-
-    if (!isProcessing) {
-      processNextPost();
-    }
+    const promises = savedData.map((item: NewPostProps) => createPost({ title: item.title, body: item.body }));
+    Promise.all(promises)
+      .then((res) => console.log(res))
+      .finally(() => {
+        queryClient.invalidateQueries('posts');
+        onAddPost();
+        closeModal();
+      });
   };
 
-  const processNextPost = () => {
-    if (posts.length > 0) {
-      const nextPost = posts[0];
-      isProcessing(true);
-      createPostMutation.mutate(nextPost);
-      setPosts((prev) => prev.slice(1));
-    } else {
-      isProcessing(false);
-    }
+  const onSave = (newData: NewPostProps) => {
+    setSaveData((prev: NewPostProps[]) => {
+      return [...prev, newData];
+    });
   };
 
-  const openModal = () => {
-    setIsOpen(true);
-    setPosts([{ title: '', body: '' }]);
-    setProgress(0);
+  const onRemove = (index: number) => {
+    const result = [...savedData];
+    result.splice(index, 1)
+
+    setSaveData(result);
   };
+
+  const openModal = () => setIsOpen(true);
 
   const closeModal = () => {
+    setSaveData([]);
     setIsOpen(false);
-    setPosts([{ title: '', body: '' }]);
-    setProgress(0);
-  };
-
-  const handleTitleChange = (value: string, index: number) => {
-    setPosts((prev) => prev.map((post, i) => (i === index ? { ...post, title: value } : post)));
-  };
-
-  const handleBodyChange = (value: string, index: number) => {
-    setPosts((prev) => prev.map((post, i) => (i === index ? { ...post, body: value } : post)));
   };
 
   return (
     <>
-      <NewPostButton onClick={() => setIsOpen(true)} />
-      <NewPostModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        posts={posts}
-        onTitleChange={handleTitleChange}
-        onBodyChange={handleBodyChange}
-        onSubmit={handleAddPost}
-        isLoading={createPostMutation.isLoading}
-        progress={progress}
-      />
+      <div className="flex justify-center lg:justify-start">
+        <button
+          onClick={openModal}
+          className="bg-blue-500 text-white px-12 py-3 mb-8 rounded-full transition duration-500 ease transform hover:-translate-y-1 cursor-pointer"
+        >
+          + Add New Post
+        </button>
+      </div>
+
+      <Modal isOpen={isOpen} onClose={closeModal}>
+        {isOpen && (
+          <>
+            <h1 className="text-2xl font-bold mb-8">Add Multiple Posts</h1>
+
+            <div className="lg:flex block">
+              <div className="flex-grow">
+                <NewPostForm onSave={onSave} />
+              </div>
+              <div className="lg:w-[300px] lg:pl-8 text-gray-500">
+                {savedData.length !== 0 && (
+                  <ul>
+                    {savedData.map((item, index) => (
+                      <>
+                        {index + 1}-
+                        <SavedPost
+                          key={index}
+                          data={item}
+                          onRemove={() => {
+                            onRemove(index);
+                          }}
+                        />
+                      </>
+                    ))}
+                  </ul>
+                )}
+
+                {savedData.length === 0 && 'No post yet...'}
+              </div>
+            </div>
+
+            <div className="border-b-2 w-full my-8"></div>
+            <ProgressBar progress={0} />
+
+            <button
+              disabled={savedData.length === 0}
+              className={`px-12 py-3 rounded-full w-full mt-5 ${
+                savedData.length === 0 ? 'bg-gray-300 text-white' : 'bg-blue-600 text-white'
+              }`}
+              onClick={onSubmit}
+            >
+              Submit
+              {savedData.length !== 0 && <>{savedData.length} Posts</>}
+            </button>
+          </>
+        )}
+      </Modal>
     </>
   );
 };

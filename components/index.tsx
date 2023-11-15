@@ -9,6 +9,5 @@ export { default as RecentPosts } from './posts/RecentPosts';
 export { default as PostPagination } from './posts/PostPagination';
 
 export { default as NewPost } from '@/components/newPost';
-export { default as NewPostButton } from '@/components/newPost/NewPostButton';
+export { default as SavedPost } from '@/components/newPost/SavedPost';
 export { default as NewPostForm } from '@/components/newPost/NewPostForm';
-export { default as NewPostModal } from '@/components/newPost/NewPostModal';
