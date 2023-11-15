@@ -1,6 +1,6 @@
 import React from 'react';
-import { PostInterface } from '@/interface/post';
 import Image from 'next/image';
+import { PostInterface } from '@/interfaces';
 
 const PostCard = ({ post }: { post: PostInterface }) => (
   <div className="bg-white shadow-lg rounded-lg p-0 lg:p-8 pb-12 mb-8">

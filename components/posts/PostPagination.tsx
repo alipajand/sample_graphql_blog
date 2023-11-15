@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { PostInterface } from '@/interfaces';
 import { usePostsQuery } from '@/hooks/usePostsQuery';
-import { PostInterface } from '@/interface/post';
 import { Loader, NewPostForm, PostCard } from '@/components';
 
 const limit = 5;

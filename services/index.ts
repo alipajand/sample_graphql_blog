@@ -1,5 +1,5 @@
 import { gql, request } from 'graphql-request';
-import { PostInterface } from '@/interface/post';
+import { PostInterface } from '@/interfaces';
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT || '';
 

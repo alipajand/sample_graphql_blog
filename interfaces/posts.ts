@@ -11,10 +11,3 @@ export interface PostInterface {
   body: string;
   user: AuthorInterface;
 }
-
-export interface PostPaginationInterface {
-  data: PostInterface[];
-  meta: {
-    totalCount: Number;
-  };
-}

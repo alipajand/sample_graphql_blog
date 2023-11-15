@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getRecentPosts } from '@/services';
-import { PostInterface } from '@/interface/post';
 import { Loader } from '@/components';
+import { getRecentPosts } from '@/services';
+import { PostInterface } from '@/interfaces';
 
 const RelatedPosts = () => {
   const [relatedPosts, setRelatedPosts] = useState<PostInterface[]>([]);
