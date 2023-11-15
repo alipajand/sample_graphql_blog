@@ -1,7 +1,9 @@
-export { default as Layout } from './Layout';
-export { default as Loader } from './Loader';
-export { default as Modal } from './Modal';
-export { default as NewPostForm } from './NewPostForm';
-export { default as PostCard } from './PostCard';
-export { default as PostPagination } from './PostPagination';
-export { default as RelatedPosts } from './RelatedPosts';
+export { default as Modal } from './shared/Modal';
+export { default as Layout } from './shared/Layout';
+export { default as Loader } from './shared/Loader';
+
+export { default as PostCard } from './posts/PostCard';
+export { default as RelatedPosts } from './posts/RelatedPosts';
+export { default as PostPagination } from './posts/PostPagination';
+
+export { default as NewPostForm } from './forms/NewPostForm';
