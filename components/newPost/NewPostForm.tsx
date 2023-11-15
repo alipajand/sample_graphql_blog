@@ -10,6 +10,9 @@ const NewPostForm: React.FC<{
   const onSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    if (!title) return;
+    if (!body) return;
+
     setTitle('');
     setBody('');
     if (onSave) onSave({ title, body });
