@@ -1,3 +1,5 @@
+type postStatus = 'pending' | 'failed' | 'successful';
+
 export interface AuthorInterface {
   id: number;
   name: string;
@@ -6,13 +8,15 @@ export interface AuthorInterface {
 }
 
 export interface PostInterface {
-  id: number;
   title: string;
   body: string;
-  user: AuthorInterface;
+  id?: number;
+  user?: AuthorInterface;
+  status?: postStatus;
 }
 
 export interface NewPostProps {
   title: string;
   body: string;
+  status?: postStatus;
 }

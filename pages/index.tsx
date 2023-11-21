@@ -4,14 +4,13 @@ import { usePostsQuery } from '@/hooks/usePostsQuery';
 import { Loader, NewPost, PostPagination, RecentPosts } from '@/components';
 
 const Index = () => {
+  const { data, isLoading } = usePostsQuery();
   const [newData, setNewData] = useState<PostInterface[]>([]);
-  const { data, isLoading, refetch } = usePostsQuery();
 
   if (isLoading) return <Loader />;
 
-  const onFetch = (items: PostInterface[] = []) => {
+  const onFetch = (items: PostInterface[] | never[] = []) => {
     setNewData((prevData) => [...prevData, ...items]);
-    refetch(); // if the server returns all new data, setNewData won't be necessary here
   };
 
   const result = newData?.length ? [...newData, ...(data?.data ?? [])] : data?.data || [];
