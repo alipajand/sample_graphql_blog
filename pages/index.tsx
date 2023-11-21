@@ -10,11 +10,11 @@ const Index = () => {
   if (isLoading) return <Loader />;
 
   const onFetch = (items: PostInterface[] = []) => {
-    refetch();
-    setNewData(items);
+    setNewData((prevData) => [...prevData, ...items]);
+    refetch(); // if the server returns all new data, setNewData won't be necessary here
   };
 
-  const result = [...newData, ...data?.data];
+  const result = newData?.length ? [...newData, ...(data?.data ?? [])] : data?.data || [];
 
   return (
     <div className="container mx-auto px-10 mb-8">

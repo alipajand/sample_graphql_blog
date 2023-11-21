@@ -3,7 +3,9 @@ import { PostInterface } from '@/interfaces';
 
 const graphqlAPI: string = process.env.NEXT_PUBLIC_GRAPHCMS_ENDPOINT || '';
 
-export const getPosts = async (page = 1, limit = 5): Promise<PostInterface[]> => {
+type PostResponseType = { data: PostInterface[]; meta: { totalCount: number } };
+
+export const getPosts = async (page = 1, limit = 5): Promise<PostResponseType> => {
   const query = gql`
     query GetAllPosts($page: Int!, $limit: Int!) {
       posts(options: { paginate: { page: $page, limit: $limit } }) {
@@ -25,8 +27,7 @@ export const getPosts = async (page = 1, limit = 5): Promise<PostInterface[]> =>
     }
   `;
 
-  const result: any = await request(graphqlAPI, query, { page, limit });
-
+  const result: { posts: PostResponseType } = await request(graphqlAPI, query, { page, limit });
   return result.posts;
 };
 
