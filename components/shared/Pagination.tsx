@@ -11,6 +11,7 @@ interface Props {
 const Pagination = ({ total, page, limit, prev, next }: Props) => {
   const [] = useState(1);
   const isLastPage = total / limit <= page;
+  const totalPage = Math.ceil(total / limit);
 
   return (
     <div className="flex justify-center items-center">
@@ -25,7 +26,7 @@ const Pagination = ({ total, page, limit, prev, next }: Props) => {
       </button>
 
       <span className="mx-8">
-        {page} / {total / limit}
+        {page} / {totalPage}
       </span>
 
       <button
