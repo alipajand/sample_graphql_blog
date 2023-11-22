@@ -23,28 +23,33 @@ const NewPost = ({ onAddPost }: { onAddPost: (posts: PostInterface[]) => void })
 
       const promises = savedData.map((item: NewPostProps) => createPost({ title: item.title, body: item.body }));
       const errors: number[] = [];
-      await Promise.all(
-        promises.map(async (promise, index) => {
-          try {
-            setProgress((index + 0.5) / promises.length);
-            return await promise;
-          } catch (error) {
-            errors.push(index);
-            console.log(error);
-          }
-        })
-      );
 
-      setSaveData((prev: NewPostProps[]) =>
-        prev.map((item: PostInterface, index) => ({
-          ...item,
-          status: errors.includes(index) ? 'failed' : 'successful'
-        }))
-      );
+      try {
+        await Promise.all(
+          promises.map(async (promise, index) => {
+            try {
+              await promise;
+              setProgress((index + 0.5) / promises.length);
+            } catch (error) {
+              errors.push(index);
+              console.error(error);
+            }
+          })
+        );
 
-      onSummary();
+        setSaveData((prev: NewPostProps[]) =>
+          prev.map((item: PostInterface, index) => ({
+            ...item,
+            status: errors.includes(index) ? 'failed' : 'successful'
+          }))
+        );
+
+        onSummary();
+      } catch (e) {
+        console.log(e);
+      }
     },
-    [setProgress, setSaveData, onSummary]
+    [setProgress, setSaveData, onSummary, savedData]
   );
 
   const addToQueue = useCallback(
@@ -71,20 +76,21 @@ const NewPost = ({ onAddPost }: { onAddPost: (posts: PostInterface[]) => void })
   const closeModal = useCallback(() => {
     if (!allowToCloseModal) return;
 
-    setIsOpen(false);
-    setSaveData([]);
-    toggleResult(false);
+    /**
+     * get new data
+     */
+    if (showResult) queryClient.invalidateQueries('posts');
 
     /**
      * update the list of posts
      */
     onAddPost(savedData.filter((item) => item.status === 'successful'));
 
-    /**
-     * get new data
-     */
-    queryClient.invalidateQueries('posts');
-  }, [allowToCloseModal, setIsOpen, setSaveData, toggleResult, onAddPost, savedData, queryClient]);
+    setProgress(0);
+    setSaveData([]);
+    toggleResult(false);
+    setIsOpen(false);
+  }, [allowToCloseModal, setIsOpen, setSaveData, setProgress, toggleResult, onAddPost, savedData, queryClient]);
 
   return (
     <>
@@ -130,7 +136,7 @@ const NewPost = ({ onAddPost }: { onAddPost: (posts: PostInterface[]) => void })
               {!showResult && (
                 <button
                   disabled={savedData.length === 0 || !allowToCloseModal}
-                  className={`px-12 py-3 rounded-full flex-grow ${
+                  className={`px-12 py-3 rounded-full flex-grow mr-3 ${
                     savedData.length === 0 || loadingProgress > 0 ? 'bg-gray-300 text-white' : 'bg-green-600 text-white'
                   }`}
                   onClick={onSubmit}
@@ -152,7 +158,7 @@ const NewPost = ({ onAddPost }: { onAddPost: (posts: PostInterface[]) => void })
 
               <button
                 disabled={!allowToCloseModal}
-                className={`py-3 px-6 rounded-full ml-3 ${
+                className={`py-3 px-10 rounded-full ${
                   !allowToCloseModal ? 'bg-gray-200 text-gray-500' : 'bg-black text-white'
                 } ${showResult ? 'flex-grow' : ''}`}
                 onClick={closeModal}
